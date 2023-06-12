@@ -1,6 +1,7 @@
 package com.cybersolution.fazeal.logistics.graphql.mutation;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
+import com.cybersolution.fazeal.common.album.dto.DefaultImage;
 import com.cybersolution.fazeal.common.album.feign.AlbumApiClient;
 import com.cybersolution.fazeal.common.exception.GenericException;
 import com.cybersolution.fazeal.logistics.dto.AddressDTO;
@@ -45,9 +46,9 @@ public class SignupMutation implements GraphQLMutationResolver {
         if(Objects.isNull(Utility.getImageFileByIndex(dataFetchingEnvironment, 2))){
             throw new GenericException(HttpStatus.BAD_REQUEST, AppConstants.VALIDATION_FAILED,messages.get(AppConstants.DRIVER_PERSONAL_IMAGE_REQUIRED));
         }
-        //signUpUserDTO.setUserIDImagePath(albumApiClient.uploadImageAndGetA_PathToLink(DefaultImage.builder().imageFile(Utility.getImageFileByIndex(dataFetchingEnvironment, 0)).build()));
-        //signUpUserDTO.setUserLicenseNumberImage(albumApiClient.uploadImageAndGetA_PathToLink(DefaultImage.builder().imageFile(Utility.getImageFileByIndex(dataFetchingEnvironment, 1)).build()));
-        //signUpUserDTO.setUserPersonalImage(albumApiClient.uploadImageAndGetA_PathToLink(DefaultImage.builder().imageFile(Utility.getImageFileByIndex(dataFetchingEnvironment, 2)).build()));
+        signUpUserDTO.setUserIDImagePath(albumApiClient.uploadImageAndGetA_PathToLink(DefaultImage.builder().imageFile(Utility.getImageFileByIndex(dataFetchingEnvironment, 0)).build()));
+        signUpUserDTO.setUserLicenseNumberImage(albumApiClient.uploadImageAndGetA_PathToLink(DefaultImage.builder().imageFile(Utility.getImageFileByIndex(dataFetchingEnvironment, 1)).build()));
+        signUpUserDTO.setUserPersonalImage(albumApiClient.uploadImageAndGetA_PathToLink(DefaultImage.builder().imageFile(Utility.getImageFileByIndex(dataFetchingEnvironment, 2)).build()));
         return signUpService.createUserInfo(signUpUserDTO);
     }
 
@@ -61,8 +62,7 @@ public class SignupMutation implements GraphQLMutationResolver {
         }
         List<String> images = new ArrayList<>();
         Utility.getImagesFiles(dataFetchingEnvironment).forEach(file -> {
-            images.add("imagePath");
-//            images.add(albumApiClient.uploadImageAndGetA_PathToLink(DefaultImage.builder().imageFile(file).build()));
+            images.add(albumApiClient.uploadImageAndGetA_PathToLink(DefaultImage.builder().imageFile(file).build()));
         });
         return signUpService.uploadVehicleImages(userId, vehicleId, images);
     }
