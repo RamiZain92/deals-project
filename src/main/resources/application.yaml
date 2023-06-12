@@ -1,0 +1,192 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: admin
+    url: jdbc:postgresql://192.168.1.213:5432/fazeallogistics
+    password: admin1234
+    hikari:
+      maxLifeTime: 600000
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL94Dialect
+        format_sql: 'true'
+    hibernate:
+      ddl-auto: update
+    show-sql: 'false'
+  cloud:
+    config:
+      enabled: false
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: fazeal-logistics
+#  config:
+#    import: optional:configserver:${CONFIG_URL:http://localhost:8888}
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - "*"
+  endpoint:
+    health:
+      show-details: always
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${DISCOVERY_URL:http://localhost:8761}/eureka/
+  instance:
+    leaseRenewalIntervalInSeconds: 1000
+    leaseExpirationDurationInSeconds: 2000
+    preferIpAddress: true
+#    hostname: ${HOST_NAME}
+
+feign:
+  client:
+    config:
+      default:
+        errorDecoder: com.cybersolution.fazeal.common.decoder.DefaultFeignErrorDecoder
+
+
+  kafka:
+    consumer:
+      enable-auto-commit: true
+      auto-offset-reset: earliest
+      bootstrap-servers: localhost:9092
+      group-id: family-group
+    producer:
+      bootstrap-servers: localhost:9092
+
+
+
+server:
+  port: ${PORT:8020}
+
+
+flyway:
+  baselineOnMigrate: true
+
+ciui:
+  app:
+    jwtExpirationMs: '10000000'
+    jwtRefreshExpirationMs: '15000000'
+    jwtSecret: FazealBusinessCIUISecretKeyFazealBusinessCIUISecretKeyFazealBusinessCIUISecretKeyFazealBusinessCIUISecretKey
+
+
+origin:
+  domain:
+    http: http://localhost:4200
+    httpip: http://127.0.0.1
+    httpsip: https://127.0.0.1
+    https: https://dev.fazeal.com
+  support: http://support.fazeal.com
+  help: http://help.fazeal.com
+  api:
+    http: http://localhost:8080
+    https: https://localhost:8080
+    httpsip: https://127.0.0.1
+    httpip: http://127.0.0.1
+
+logging:
+  file:
+    name: application.log
+    path: /opt/app/
+  level:
+    org:
+      hibernate: ERROR
+      springframework:
+        nodeValue: ERROR
+        web: TRACE
+    com:
+      cybersolution: ERROR
+    root: INFO
+    #file: /opt/app/application.log
+
+
+  # AWS
+amazonProperties:
+  endpointUrl: https://image-fazeal-bucket-qa.s3.amazonaws.com
+  bucketName: image-fazeal-bucket-qa
+  accessKey: AKIA22Z7QLS6DQWSB27X
+  secretKey: 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
+
+
+isDEVMode: true
+
+auth:
+  password:
+    regex: ^.*(?=.{8,20})(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!#$%&'()*+,-./:"<=>?@\^_`{|}~])(?!.*[\s]).*$
+  username:
+    regex: "^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,21}[a-zA-Z0-9]$"
+  email:
+    regex: "^((.+)@(.+)\\.)(.+)$"
+  mobileno:
+    regex: "^(\\s*|\\d{10,15})$"
+  name:
+    regex: "[^a-zA-Z ]"
+  categoryname:
+    regex: "^[a-zA-Z]([&]){3,40}"
+  image:
+    regex: "[^\\s]+(.*?)\\.(jpg|jpeg|png|gif|svg|JPG|JPEG|PNG|GIF|SVG)$"
+  number:
+    regex: "^\\d+$"
+  taxid:
+    regex: "^(\\s*|\\d{9,15})$"
+  registration:
+    regex: "^(\\s*|\\d{6,15})$"
+  uploadfile:
+    regex: "^.*\\.(jpg|jpeg|png|gif|pdf|JPG|JPEG|PNG|GIF|PDF)$"
+  24hoursformat:
+    regex: "^(\\s*|\\d{0,2})$"
+  minuteformat:
+    regex: "^(\\s*|\\d{0,2})$"
+  charnumber:
+    regex: "^[a-zA-Z0-9 ]*[a-zA-Z0-9 ]$"
+  ssl:
+    regex: "^(?!000|666)[0-8][0-9A-Z]{2}-(?!00)[0-9A-Z]{2}-(?!0000)[0-9A-Z]{4}$"
+  ssl2:
+    regex: "[0-9A-Z]{7,16}$"
+unitsystem:
+  regex: "IMPERIAL,METRIC"
+address:
+  type: "OPTIONAL,STORE,WAREHOUSE"
+business:
+  settings:
+    24hoursformat: "^(?:[01]?[0-9]|2[0-3])(?!\\d)"
+    minutesformat: "^([0-5]?[0-9])$"
+social:
+  media:
+    websites: "TikTok,Facebook,Snapchat,Instagram,Twitter,LinkedIn,YouTube,WhatsApp,Fazeal"
+
+# OTP Config
+http:
+  request:
+    otp:
+      create: /api/v1/otp/create/
+      verify: /api/v1/otp/verify/
+    notification:
+      service:
+        notificationUrl: http://notifydev.fazeal.com
+    connection:
+      timeout: 3000
+    read:
+      timeout: 30000
+
+#Kafka
+
+kafka:
+  notification:
+    topicName: family-app-notification-topic
+  topic:
+    otp:
+      generation: otp-verification-topic
+    invitation: invitation-topic
+  consumer:
+    topic:
+      notification: family-app-notification-topic
+  error:
+    dlq:
+      topicName: fazeal-business-app-dlq-topic
+

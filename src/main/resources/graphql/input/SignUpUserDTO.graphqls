@@ -1,0 +1,11 @@
+input SignUpUserDTO{
+   firstName: String
+   lastName: String
+   middleName: String
+   genderType: String
+   username: String
+   email: String
+   password: String
+   contactNumber: String
+   dateOfBirth: String
+}

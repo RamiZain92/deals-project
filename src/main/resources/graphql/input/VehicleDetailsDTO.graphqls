@@ -1,0 +1,18 @@
+input VehicleDetailsDTO{
+   userId: Long
+   type: String
+   licensePlateNumber: String
+   brand: String
+   modelName: String
+   capacity: String
+   fuelType: String
+   mileAge: String
+   year: String
+   status: String
+   drivingMethod: DrivingMethod
+   color: String
+}
+
+enum DrivingMethod{
+   ON_FOOT, BICYCLE, CAR, VAN
+}

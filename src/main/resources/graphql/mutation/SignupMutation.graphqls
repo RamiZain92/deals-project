@@ -1,0 +1,14 @@
+extend type Mutation {
+   createUserInfo(signUpUserDTO: SignUpUserDTO): SignUpResponse
+   createVehicleDetails(vehicleDetailsDTO: VehicleDetailsDTO): SignUpResponse
+   uploadVehicleImages(userId: Long, vehicleId: Long): SignUpResponse
+   createAddressInfo(addressDTO: AddressDTO): SignUpResponse
+   agreements(userId: Long): SignUpResponse
+}
+
+type SignUpResponse{
+  userId: Long
+  vehicleId: Long
+  addressId: Long
+  message: String
+}

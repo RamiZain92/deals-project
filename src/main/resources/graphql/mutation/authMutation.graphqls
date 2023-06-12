@@ -1,0 +1,27 @@
+extend type Mutation {
+   authenticateUser(loginRequestDTO: LoginRequestDTO): JwtResponseDTO
+   logout(userId: Long, refreshToken: String): MessageResponse
+}
+
+input LoginRequestDTO {
+   userName: String
+   password: String
+}
+
+type JwtResponseDTO {
+    id: Long
+    userId: Long
+	username: String
+	firstName: String
+	lastName: String
+	email: String
+	accessToken: String
+	refreshToken: String
+	tokenType: String
+	roles: [String]
+}
+
+type MessageResponse{
+   status: String
+   message: String
+}
