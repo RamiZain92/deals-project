@@ -1,23 +1,18 @@
 package com.cybersolution.fazeal.logistics.service.impl;
 
 import com.cybersolution.fazeal.common.exception.GenericException;
+import com.cybersolution.fazeal.logistics.constants.*;
 import com.cybersolution.fazeal.logistics.custom.validation.SignUpValidation;
 import com.cybersolution.fazeal.logistics.dto.AddressDTO;
 import com.cybersolution.fazeal.logistics.entity.*;
-import com.cybersolution.fazeal.logistics.repository.CountryRepository;
+import com.cybersolution.fazeal.logistics.repository.*;
 import com.cybersolution.fazeal.logistics.util.Messages;
-import com.cybersolution.fazeal.logistics.constants.Agreements;
-import com.cybersolution.fazeal.logistics.constants.AppConstants;
-import com.cybersolution.fazeal.logistics.constants.Policies;
-import com.cybersolution.fazeal.logistics.constants.SignUpProcess;
 import com.cybersolution.fazeal.logistics.dto.SignUpUserDTO;
 import com.cybersolution.fazeal.logistics.dto.VehicleDetailsDTO;
-import com.cybersolution.fazeal.logistics.repository.AddressRepository;
-import com.cybersolution.fazeal.logistics.repository.UserRepository;
-import com.cybersolution.fazeal.logistics.repository.VehicleRepository;
 import com.cybersolution.fazeal.logistics.response.SignUpResponse;
 import com.cybersolution.fazeal.logistics.service.SignUpService;
 import com.cybersolution.fazeal.logistics.service.mapper.SignUpUserMapper;
+import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -49,6 +44,9 @@ public class SignUpServiceImpl implements SignUpService {
 	@Autowired
 	private SignUpUserMapper signUpUserMapper;
 
+	@Autowired
+	private RoleRepository roleRepository;
+
 
 	@Override
 	public SignUpResponse createUserInfo(SignUpUserDTO signUpUserDTO) {
@@ -67,6 +65,11 @@ public class SignUpServiceImpl implements SignUpService {
 		}
 		userEntity = signUpUserMapper.dtoToEntity(signUpUserDTO);
 		UserEntity savedUser = userRepository.save(userEntity);
+
+		RoleEntity roleEntity = roleRepository.findByRoleType(RoleType.ROLE_USER).orElse(null);
+		userEntity.setRoleEntity(roleEntity);
+		userRepository.save(userEntity);
+		
 		return SignUpResponse.builder().userId(savedUser.getId()).message(messages.get(AppConstants.SUCCESS_MESSAGE_USER_INFO)).build();
 	}
 
