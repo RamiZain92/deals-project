@@ -25,7 +25,7 @@ public class JwtUtils {
 	private String jwtSecret;
 
 	@Value("${ciui.app.jwtExpirationMs}")
-	private int jwtExpirationMs;
+	private String jwtExpirationMs;
 
 	public String generateJwtToken(UserDetailsImpl userDetails) {
 				return generateTokenFromUserDetails(userDetails);
@@ -46,7 +46,7 @@ public class JwtUtils {
 	public Pair<String, String> getUserNameAndCompanyIdFromJWTToken(String token) {
 		var body =Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
 		
-		return Pair.of(body.getSubject(), body.get("companyId").toString());
+		return Pair.of(body.getSubject(), body.get("username").toString());
 	}
 
 	public boolean validateJwtToken(String authToken) {
