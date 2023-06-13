@@ -25,7 +25,7 @@ public class JwtUtils {
 	private String jwtSecret;
 
 	@Value("${ciui.app.jwtExpirationMs}")
-	private int jwtExpirationMs;
+	private Long jwtExpirationMs;
 
 	public String generateJwtToken(UserDetailsImpl userDetails) {
 				return generateTokenFromUserDetails(userDetails);
