@@ -46,7 +46,7 @@ public class JwtUtils {
 	public Pair<String, String> getUserNameAndCompanyIdFromJWTToken(String token) {
 		var body =Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
 		
-		return Pair.of(body.getSubject(), body.get("companyId").toString());
+		return Pair.of(body.getSubject(), body.get("username").toString());
 	}
 
 	public boolean validateJwtToken(String authToken) {
