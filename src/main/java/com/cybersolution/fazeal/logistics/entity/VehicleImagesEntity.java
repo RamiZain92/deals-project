@@ -22,7 +22,7 @@ public class VehicleImagesEntity extends AbstractBasedEntity implements Serializ
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "image_path", length = 45, nullable = false)
+	@Column(name = "image_path", length = 255, nullable = false)
 	private String imagePath;
 
 	@ManyToOne

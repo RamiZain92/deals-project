@@ -63,7 +63,7 @@ public final class AppConstants {
 	/**
 	 * ROLE ACCESS
 	 */
-	public static final String HAS_ADMIN_ROLE_OR_EDITOR_ROLE = "(hasRole('ROLE_EDITOR') || hasRole('ROLE_ADMIN'))";
+	public static final String HAS_ADMIN_ROLE_OR_USER_ROLE = "(hasRole('ROLE_USER') || hasRole('ROLE_ADMIN'))";
 	public static final String HAS_ADMIN_ROLE_OR_ROLE_SALESPERSON = "(hasRole('ROLE_SALESPERSON') || hasRole('ROLE_ADMIN'))";
 	
 	/**
@@ -140,7 +140,11 @@ public final class AppConstants {
 	public static final String DRIVER_ALREADY_REGISTERED= "DRIVER_ALREADY_REGISTERED";
 	public static final String ADDRESS_EMPTY= "ADDRESS_EMPTY";
 	public static final String SUCCESS_MESSAGE_AGREEMENTS_DONE = "SUCCESS_MESSAGE_AGREEMENTS_DONE";
-
+	public static final String AVAILABLE_REQUIRED = "AVAILABLE_REQUIRED";
+	public static final String DRIVER_AVAILABILITY_UPDATED = "DRIVER_AVAILABILITY_UPDATED";
+	public static final String USERNAME_REQUIRED = "USERNAME_REQUIRED";
+	public static final String NOT_AUTHORIZED_TO_LOGIN = "NOT_AUTHORIZED_TO_LOGIN";
+	public static final String DRIVING_METHOD_UPDATED = "DRIVING_METHOD_UPDATED";
 
 
 	

@@ -1,0 +1,20 @@
+extend type Query {
+   getUserDrivingMethods: [VehicleDetailsResponse]
+}
+
+type VehicleDetailsResponse {
+   id: Long
+   userId: Long
+   type: String
+   licensePlateNumber: String
+   brand: String
+   modelName: String
+   capacity: String
+   fuelType: String
+   mileAge: String
+   year: String
+   status: String
+   drivingMethod: DrivingMethod
+   color: String
+   vehicleImages: [String]
+}

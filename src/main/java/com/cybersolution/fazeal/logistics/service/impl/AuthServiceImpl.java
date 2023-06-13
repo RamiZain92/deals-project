@@ -62,8 +62,8 @@ public class AuthServiceImpl implements AuthService {
         }
 
         if (Objects.isNull(username)) {
-            throw new GenericException(HttpStatus.BAD_REQUEST, AppConstants.PASSWORD_INVALID,
-                    messages.get(AppConstants.PASSWORD_NOT_EMPTY));
+            throw new GenericException(HttpStatus.BAD_REQUEST, AppConstants.USERNAME_REQUIRED,
+                    messages.get(AppConstants.USERNAME_REQUIRED));
         }
 
         UserEntity userEntity = userRepository.findByUserNameAndActive(username, Status.ACTIVE).orElse(null);
@@ -74,13 +74,13 @@ public class AuthServiceImpl implements AuthService {
 
         userEntity = userRepository.findByIdAndSignUpProcess(userEntity.getId(), SignUpProcess.DONE).orElse(null);
         if (Objects.isNull(userEntity)) {
-            throw new GenericException(HttpStatus.NOT_FOUND, AppConstants.SIGN_UP_NOT_DONE,
+            throw new GenericException(HttpStatus.CONFLICT, AppConstants.SIGN_UP_NOT_DONE,
                     messages.get(AppConstants.SIGN_UP_NOT_DONE));
         }
 
         if(!userEntity.getRoleEntity().getRoleType().equals(RoleType.ROLE_USER)){
-            throw new GenericException(HttpStatus.NOT_FOUND, AppConstants.SIGN_UP_NOT_DONE,
-                    messages.get(AppConstants.SIGN_UP_NOT_DONE));
+            throw new GenericException(HttpStatus.CONFLICT, AppConstants.NOT_AUTHORIZED_TO_LOGIN,
+                    messages.get(AppConstants.NOT_AUTHORIZED_TO_LOGIN));
         }
 
         Authentication authentication = authenticationManager.authenticate(

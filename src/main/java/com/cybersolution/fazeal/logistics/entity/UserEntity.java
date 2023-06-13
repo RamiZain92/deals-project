@@ -78,7 +78,7 @@ public class UserEntity extends AbstractBasedEntity implements Serializable {
 	private Boolean availability;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "sign_up_process", length = 10)
+	@Column(name = "sign_up_process", length = 20)
 	private SignUpProcess signUpProcess;
 
 	@Enumerated(EnumType.STRING)

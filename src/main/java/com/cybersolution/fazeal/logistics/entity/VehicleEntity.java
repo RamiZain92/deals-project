@@ -55,6 +55,9 @@ public class VehicleEntity extends AbstractBasedEntity implements Serializable {
 	@Column(name = "color", length = 45, nullable = false)
 	private String color;
 
+	@Column(name = "enabled", nullable = false)
+	private Boolean enabled;
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "driving_method", length = 20, nullable = false)
 	private DrivingMethod drivingMethod;

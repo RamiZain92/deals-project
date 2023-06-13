@@ -1,0 +1,4 @@
+extend type Mutation {
+   setDriverAvailability(available: Boolean): MessageResponse
+   selectDrivingMethod(vehicleId: Long): MessageResponse
+}

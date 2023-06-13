@@ -36,7 +36,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 			if (StringUtils.hasText(jwt)) {
 				var pair= jwtUtils.getUserNameAndCompanyIdFromJWTToken(jwt);
 
-				UserDetails userDetails = userDetailsService.loadUserByUsername(String.join(AppConstants.PIPELINE, pair.getFirst(),pair.getSecond()));
+				UserDetails userDetails = userDetailsService.loadUserByUsername(pair.getSecond());
 				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
 						userDetails, null, userDetails.getAuthorities());
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
