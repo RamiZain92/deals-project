@@ -64,7 +64,6 @@ public class SignUpUserMapper {
 		vehicleEntity.setStatus(vehicleDetailsDTO.getStatus());
 		vehicleEntity.setDrivingMethod(vehicleDetailsDTO.getDrivingMethod());
 		vehicleEntity.setColor(vehicleDetailsDTO.getColor());
-		vehicleEntity.setEnabled(false);
 		return vehicleEntity;
 	}
 

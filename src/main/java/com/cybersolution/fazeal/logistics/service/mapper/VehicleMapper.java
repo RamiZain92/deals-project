@@ -26,7 +26,7 @@ public class VehicleMapper {
         vehicleDetailsResponse.setMileAge(vehicleEntity.getMileage());
         vehicleDetailsResponse.setYear(vehicleEntity.getYear());
         vehicleDetailsResponse.setModelName(vehicleEntity.getModelName());
-        vehicleDetailsResponse.setEnabled(vehicleEntity.getEnabled());
+        vehicleDetailsResponse.setActive(vehicleEntity.getActive().toString());
         vehicleDetailsResponse.setVehicleImages(vehicleEntity.getVehicleImagesEntities()
                 .stream().map(image -> image.getImagePath()).collect(Collectors.toList()));
         return vehicleDetailsResponse;

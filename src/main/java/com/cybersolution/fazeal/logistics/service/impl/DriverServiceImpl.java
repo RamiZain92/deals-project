@@ -3,6 +3,7 @@ package com.cybersolution.fazeal.logistics.service.impl;
 import com.cybersolution.fazeal.common.dto.MessageResponse;
 import com.cybersolution.fazeal.common.exception.GenericException;
 import com.cybersolution.fazeal.logistics.constants.AppConstants;
+import com.cybersolution.fazeal.logistics.constants.Status;
 import com.cybersolution.fazeal.logistics.entity.UserEntity;
 import com.cybersolution.fazeal.logistics.entity.VehicleEntity;
 import com.cybersolution.fazeal.logistics.repository.UserRepository;
@@ -67,8 +68,8 @@ public class DriverServiceImpl implements DriverService {
         VehicleEntity vehicleEntity = vehicleRepository.findByIdAndUserEntity(vehicleId, userEntity)
                 .orElseThrow(() -> new GenericException(HttpStatus.CONFLICT, AppConstants.VEHICLE_NOT_FOUND,
                         messages.get(AppConstants.VEHICLE_NOT_FOUND)));
-        userEntity.getVehicleEntities().forEach(vehicle -> vehicle.setEnabled(false));
-        vehicleEntity.setEnabled(true);
+        userEntity.getVehicleEntities().forEach(vehicle -> vehicle.setActive(Status.INACTIVE));
+        vehicleEntity.setActive(Status.ACTIVE);
         vehicleRepository.save(vehicleEntity);
         return MessageResponse.builder().message(messages.get(AppConstants.DRIVING_METHOD_UPDATED)).build();
     }

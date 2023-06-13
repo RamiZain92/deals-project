@@ -27,7 +27,7 @@ public class VehicleDetailsResponse {
     private String status;
     private DrivingMethod drivingMethod;
     private String color;
-    private Boolean enabled;
+    private String active;
     private List<String> vehicleImages;
 
 }
