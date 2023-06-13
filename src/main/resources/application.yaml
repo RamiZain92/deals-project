@@ -23,4 +23,3 @@ eureka:
     leaseRenewalIntervalInSeconds: 1000
     leaseExpirationDurationInSeconds: 2000
     preferIpAddress: true
-    hostname: ${HOST_NAME}
