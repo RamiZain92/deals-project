@@ -32,9 +32,6 @@ import java.util.stream.Collectors;
 @Component
 public class MapScalar extends GraphQLScalarType {
 	
-	@Autowired
-	private static Messages messages;
-	
     public MapScalar() {
         this("Object", "An object scalar");
     }
@@ -56,7 +53,7 @@ public class MapScalar extends GraphQLScalarType {
             public Object parseLiteral(Object input, Map<String, Object> variables)
                     throws CoercingParseLiteralException {
                 if (!(input instanceof Value)) {
-                    throw new CoercingParseLiteralException(messages.get(AppConstants.EXPECTED_AST_TYPE_ERROR));
+                    throw new CoercingParseLiteralException(AppConstants.EXPECTED_AST_TYPE_ERROR);
                 } else if (input instanceof NullValue) {
                     return null;
                 } else if (input instanceof FloatValue) {
