@@ -16,6 +16,5 @@ type VehicleDetailsResponse {
    status: String
    drivingMethod: DrivingMethod
    color: String
-   active: String
    vehicleImages: [String]
 }
