@@ -5,4 +5,6 @@ import com.cybersolution.fazeal.common.logistics.dto.ReviewRequestDTO;
 
 public interface ReviewService {
 	public MessageResponse addReview(ReviewRequestDTO reviewRequestDTO);
+	
+	public MessageResponse updateReview(Long id,ReviewRequestDTO reviewRequestDTO);
 }
