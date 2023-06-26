@@ -57,4 +57,18 @@ public class ReviewServiceImpl implements ReviewService{
 					messages.get(AppConstants.REVIEW_RATING_VALIDATION));
 		}
 	}
+
+	@Override
+	public MessageResponse updateReview(Long id, ReviewRequestDTO reviewRequestDTO) {
+		ReviewsEntity reviewsEntity = reviewsRepository.findByIdAndCustomerId(id,reviewRequestDTO.getCustomerId()).orElseThrow(()->
+			new GenericException(HttpStatus.NOT_FOUND, AppConstants.REVIEW_NOT_FOUND,
+				messages.get(AppConstants.REVIEW_NOT_FOUND)));
+		reviewValidation(reviewRequestDTO);
+		reviewsEntity.setFeedback(reviewRequestDTO.getFeedback());
+		reviewsEntity.setSuggestions(reviewRequestDTO.getSuggestion());
+		reviewsEntity.setRating(reviewRequestDTO.getRating());
+		reviewsEntity.setUpdatedDate(LocalDateTime.now());
+		reviewsRepository.save(reviewsEntity);
+		return MessageResponse.builder().message(messages.get(AppConstants.REVIEW_UPDATED_SUCCESSFULLY)).build();
+	}
 }

@@ -3,6 +3,7 @@ package com.cybersolution.fazeal.logistics.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,5 +28,10 @@ public class ReviewController {
 	@PostMapping("/logistics/reviews/create")
 	public ResponseEntity<MessageResponse> addReview(@RequestBody ReviewRequestDTO reviewRequestDTO){
 		return ResponseEntity.ok(reviewService.addReview(reviewRequestDTO));
+	}
+	
+	@PostMapping("/logistics/reviews/{id}/update")
+	public ResponseEntity<MessageResponse> updateReview(@PathVariable Long id,@RequestBody ReviewRequestDTO reviewRequestDTO){
+		return ResponseEntity.ok(reviewService.updateReview(id, reviewRequestDTO));
 	}
 }
