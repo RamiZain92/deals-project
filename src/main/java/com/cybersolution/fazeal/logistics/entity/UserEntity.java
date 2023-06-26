@@ -105,5 +105,8 @@ public class UserEntity extends AbstractBasedEntity implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "role_id")
 	private RoleEntity roleEntity;
+	
+	@OneToMany(mappedBy = "userEntity",cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<ReviewsEntity> reviewsEntities = new ArrayList<>();
 
 }
