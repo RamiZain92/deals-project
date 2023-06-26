@@ -145,6 +145,12 @@ public final class AppConstants {
 	public static final String USERNAME_REQUIRED = "USERNAME_REQUIRED";
 	public static final String NOT_AUTHORIZED_TO_LOGIN = "NOT_AUTHORIZED_TO_LOGIN";
 	public static final String DRIVING_METHOD_UPDATED = "DRIVING_METHOD_UPDATED";
+	public static final String REVIEW_RATING_VALIDATION = "REVIEW_RATING_VALIDATION";
+	public static final String REVIEW_FEEDBACK_NOT_BLANK = "REVIEW_FEEDBACK_NOT_BLANK";
+	public static final String REVIEW_ADDED_SUCCESSFULLY = "REVIEW_ADDED_SUCCESSFULLY";
+	public static final String REVIEW_CONTROLLER="Logistics Review Controller";
+	
+	
 
 
 	

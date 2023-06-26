@@ -99,6 +99,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         
 
         .antMatchers(AUTH_WHITELIST).permitAll()
+        .antMatchers("/api/v1/**").permitAll()
         .antMatchers("/graphql/**").permitAll().antMatchers("/graphiql/**").permitAll()
 
             .anyRequest().authenticated().and().httpBasic().and().formLogin();
