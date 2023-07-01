@@ -1,14 +1,20 @@
 package com.cybersolution.fazeal.logistics.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.cybersolution.fazeal.common.dto.MessageResponse;
 import com.cybersolution.fazeal.common.exception.GenericException;
+import com.cybersolution.fazeal.common.logistics.dto.DriverReviewResponse;
 import com.cybersolution.fazeal.common.logistics.dto.ReviewRequestDTO;
 import com.cybersolution.fazeal.logistics.constants.AppConstants;
 import com.cybersolution.fazeal.logistics.constants.Status;
@@ -70,5 +76,20 @@ public class ReviewServiceImpl implements ReviewService{
 		reviewsEntity.setUpdatedDate(LocalDateTime.now());
 		reviewsRepository.save(reviewsEntity);
 		return MessageResponse.builder().message(messages.get(AppConstants.REVIEW_UPDATED_SUCCESSFULLY)).build();
+	}
+
+	@Override
+	public List<DriverReviewResponse> getAllReviews(Integer pageNum, Integer pageSize,
+			String keyword) {
+		Sort sort = Sort.by(AppConstants.DEFAULT_SORT_FIELD_REVIEW);
+		sort =sort.descending();
+		Pageable pageable = PageRequest.of(pageNum - 1, pageSize, sort);
+		Page<ReviewsEntity> page = null;
+		if (Objects.nonNull(keyword)) {
+			page = reviewsRepository.findAll(keyword, pageable);
+		} else {
+			page = reviewsRepository.findAll(pageable);
+		}
+		return reviewsMapper.entitiesToResponse(page.getContent());
 	}
 }
