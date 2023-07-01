@@ -151,6 +151,8 @@ public final class AppConstants {
 	public static final String REVIEW_CONTROLLER="Logistics Review Controller";
 	public static final String REVIEW_NOT_FOUND = "REVIEW_NOT_FOUND";
 	public static final String REVIEW_UPDATED_SUCCESSFULLY = "REVIEW_UPDATED_SUCCESSFULLY";
+	public static final String SORT_DIR_DESC = "desc";
+	public static final String DEFAULT_SORT_FIELD_REVIEW="rating";
 	
 	
 

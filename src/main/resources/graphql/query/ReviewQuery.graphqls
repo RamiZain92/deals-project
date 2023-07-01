@@ -1,0 +1,12 @@
+extend type Query {
+	getAllReviews(pageNum : Int,pageSize : Int,keyword : String) : [DriverReviewResponse]
+}
+type DriverReviewResponse{
+	id :  Long 
+	customerId : Long
+	driverFirstName : String 
+	driverLastName : String
+	rating : Int
+	feedback : String
+	suggestion : String 
+}
