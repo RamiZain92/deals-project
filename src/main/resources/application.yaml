@@ -5,6 +5,10 @@ spring:
     name: fazeal-logistics
   config:
     import: optional:configserver:${CONFIG_URL:http://localhost:8888}
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1040MB
 management:
   endpoints:
     web:
