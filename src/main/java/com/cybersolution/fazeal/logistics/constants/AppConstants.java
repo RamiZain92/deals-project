@@ -154,9 +154,9 @@ public final class AppConstants {
 	public static final String SORT_DIR_DESC = "desc";
 	public static final String DEFAULT_SORT_FIELD_REVIEW="rating";
 	public static final String REVIEWS_NOT_FOUND = "REVIEWS_NOT_FOUND";
-	
-	
-
+	public static final String CONTACT_NO_MUST_BE_09_15_DIGITS = "CONTACT_NO_MUST_BE_09_15_DIGITS";
+	public static final String CONTACT_NO_MUST_BE_DIGITS_ONLY = "CONTACT_NO_MUST_BE_DIGITS_ONLY";
+	public static final String CONTACT_NUMBER_UPDATED_SUCCESSFULLY= "CONTACT_NUMBER_UPDATED_SUCCESSFULLY";
 
 	
 }
