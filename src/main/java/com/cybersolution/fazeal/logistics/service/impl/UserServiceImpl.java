@@ -1,6 +1,7 @@
 package com.cybersolution.fazeal.logistics.service.impl;
 
 import com.cybersolution.fazeal.common.exception.GenericException;
+import com.cybersolution.fazeal.common.logistics.dto.UpdateContactNumberDTO;
 import com.cybersolution.fazeal.logistics.constants.AppConstants;
 import com.cybersolution.fazeal.logistics.entity.UserEntity;
 import com.cybersolution.fazeal.logistics.repository.RoleRepository;
@@ -30,6 +31,8 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserMapper userMapper;
+	@Autowired
+	private Utility utility;
 
 	@Override
 	public UserEntity getLoggedUser() {
@@ -47,6 +50,24 @@ public class UserServiceImpl implements UserService {
 	public UserResponse getLoggedUserDetails() {
 		UserEntity userEntity = getLoggedUser();
 		return userMapper.userEntityToResponse(userEntity);
+	}
+	@Override
+	public String updateContactNumber(UpdateContactNumberDTO updateContactNumberDTO) {
+		UserEntity loggedUser = getLoggedUser();
+		UserEntity existingUser = userRepository.findById(loggedUser.getId()).orElse(null);
+		if (Objects.isNull(existingUser)) {
+			throw new GenericException(HttpStatus.NOT_FOUND, String.valueOf(HttpStatus.NOT_FOUND.value()),
+					messages.get(AppConstants.USER_NOT_FOUND));
+		}
+		if(updateContactNumberDTO.getContactNumber().length() <9 || updateContactNumberDTO.getContactNumber().length() >15) {
+			throw new GenericException(HttpStatus.BAD_REQUEST, AppConstants.VALIDATION_FAILED,messages.get(AppConstants.CONTACT_NO_MUST_BE_09_15_DIGITS));
+		}
+		if(!utility.isNumberValidator(updateContactNumberDTO.getContactNumber())) {
+			throw new GenericException(HttpStatus.BAD_REQUEST, AppConstants.VALIDATION_FAILED,messages.get(AppConstants.CONTACT_NO_MUST_BE_DIGITS_ONLY));
+		}
+		existingUser.setContactNumber(updateContactNumberDTO.getContactNumber());
+		UserEntity saveUser = userRepository.save(existingUser);
+		return messages.get(AppConstants.CONTACT_NUMBER_UPDATED_SUCCESSFULLY);
 	}
 
 }
