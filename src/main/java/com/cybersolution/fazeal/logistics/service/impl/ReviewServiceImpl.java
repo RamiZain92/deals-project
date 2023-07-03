@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import com.cybersolution.fazeal.common.dto.MessageResponse;
 import com.cybersolution.fazeal.common.exception.GenericException;
@@ -91,5 +92,31 @@ public class ReviewServiceImpl implements ReviewService{
 			page = reviewsRepository.findAll(pageable);
 		}
 		return reviewsMapper.entitiesToResponse(page.getContent());
+	}
+
+	@Override
+	public List<DriverReviewResponse> getReviewsOfDriver(Long id) {
+		if(Objects.isNull(id)) {
+			throw new GenericException(HttpStatus.BAD_REQUEST, AppConstants.USER_ID_REQUIRED,
+					messages.get(AppConstants.USER_ID_REQUIRED));
+		}
+		UserEntity user = userRepository.findByIdAndActive(id,Status.ACTIVE).orElseThrow(()->
+			new GenericException(HttpStatus.NOT_FOUND, AppConstants.USER_NOT_FOUND,
+					messages.get(AppConstants.USER_NOT_FOUND)));
+		List<ReviewsEntity> reviews = reviewsRepository.findAllByUserId(id);
+		return reviewsMapper.entitiesToResponse(reviews);
+	}
+
+	@Override
+	public double getAvgRatingOfDriver(Long id) {
+		UserEntity user = userRepository.findByIdAndActive(id,Status.ACTIVE).orElseThrow(()->
+			new GenericException(HttpStatus.NOT_FOUND, AppConstants.USER_NOT_FOUND,
+					messages.get(AppConstants.USER_NOT_FOUND)));
+		List<ReviewsEntity> reviews = reviewsRepository.findAllByUserId(id);
+		if(ObjectUtils.isEmpty(reviews)) {
+			throw new GenericException(HttpStatus.NOT_FOUND, AppConstants.REVIEWS_NOT_FOUND,
+					messages.get(AppConstants.REVIEWS_NOT_FOUND));
+		}
+		return reviewsRepository.getAvgOfDriverRating(id);
 	}
 }

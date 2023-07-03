@@ -22,4 +22,11 @@ public class ReviewsQuery implements GraphQLQueryResolver {
 		return reviewService.getAllReviews(pageNum, pageSize, keyword);
 	}
 
+	public List<DriverReviewResponse> getAllReviewsOfDriver(Long id){
+		return reviewService.getReviewsOfDriver(id);
+	}
+	
+	public double getAvgRatingOfDriver(Long id) {
+		return reviewService.getAvgRatingOfDriver(id);
+	}
 }
