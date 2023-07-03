@@ -54,19 +54,14 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public String updateContactNumber(UpdateContactNumberDTO updateContactNumberDTO) {
 		UserEntity loggedUser = getLoggedUser();
-		UserEntity existingUser = userRepository.findById(loggedUser.getId()).orElse(null);
-		if (Objects.isNull(existingUser)) {
-			throw new GenericException(HttpStatus.NOT_FOUND, String.valueOf(HttpStatus.NOT_FOUND.value()),
-					messages.get(AppConstants.USER_NOT_FOUND));
-		}
 		if(updateContactNumberDTO.getContactNumber().length() <9 || updateContactNumberDTO.getContactNumber().length() >15) {
 			throw new GenericException(HttpStatus.BAD_REQUEST, AppConstants.VALIDATION_FAILED,messages.get(AppConstants.CONTACT_NO_MUST_BE_09_15_DIGITS));
 		}
 		if(!utility.isNumberValidator(updateContactNumberDTO.getContactNumber())) {
 			throw new GenericException(HttpStatus.BAD_REQUEST, AppConstants.VALIDATION_FAILED,messages.get(AppConstants.CONTACT_NO_MUST_BE_DIGITS_ONLY));
 		}
-		existingUser.setContactNumber(updateContactNumberDTO.getContactNumber());
-		UserEntity saveUser = userRepository.save(existingUser);
+		loggedUser.setContactNumber(updateContactNumberDTO.getContactNumber());
+		userRepository.save(loggedUser);
 		return messages.get(AppConstants.CONTACT_NUMBER_UPDATED_SUCCESSFULLY);
 	}
 
