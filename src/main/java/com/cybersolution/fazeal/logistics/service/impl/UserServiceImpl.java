@@ -1,10 +1,10 @@
 package com.cybersolution.fazeal.logistics.service.impl;
 
+import com.cybersolution.fazeal.common.dto.MessageResponse;
 import com.cybersolution.fazeal.common.exception.GenericException;
 import com.cybersolution.fazeal.common.logistics.dto.UpdateContactNumberDTO;
 import com.cybersolution.fazeal.logistics.constants.AppConstants;
 import com.cybersolution.fazeal.logistics.entity.UserEntity;
-import com.cybersolution.fazeal.logistics.repository.RoleRepository;
 import com.cybersolution.fazeal.logistics.repository.UserRepository;
 import com.cybersolution.fazeal.logistics.response.UserResponse;
 import com.cybersolution.fazeal.logistics.security.services.UserDetailsImpl;
@@ -15,7 +15,6 @@ import com.cybersolution.fazeal.logistics.util.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Objects;
@@ -51,8 +50,9 @@ public class UserServiceImpl implements UserService {
 		UserEntity userEntity = getLoggedUser();
 		return userMapper.userEntityToResponse(userEntity);
 	}
+
 	@Override
-	public String updateContactNumber(UpdateContactNumberDTO updateContactNumberDTO) {
+	public MessageResponse updateContactNumber(UpdateContactNumberDTO updateContactNumberDTO) {
 		UserEntity loggedUser = getLoggedUser();
 		if(updateContactNumberDTO.getContactNumber().length() <9 || updateContactNumberDTO.getContactNumber().length() >15) {
 			throw new GenericException(HttpStatus.BAD_REQUEST, AppConstants.VALIDATION_FAILED,messages.get(AppConstants.CONTACT_NO_MUST_BE_09_15_DIGITS));
@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
 		}
 		loggedUser.setContactNumber(updateContactNumberDTO.getContactNumber());
 		userRepository.save(loggedUser);
-		return messages.get(AppConstants.CONTACT_NUMBER_UPDATED_SUCCESSFULLY);
+		return MessageResponse.builder().message(messages.get(AppConstants.CONTACT_NUMBER_UPDATED_SUCCESSFULLY)).build();
 	}
 
 }
