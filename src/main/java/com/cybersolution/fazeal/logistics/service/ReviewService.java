@@ -12,4 +12,8 @@ public interface ReviewService {
 	public MessageResponse updateReview(Long id,ReviewRequestDTO reviewRequestDTO);
 	
 	public List<DriverReviewResponse> getAllReviews(Integer pageNum, Integer pageSize,String keyword);
+	
+	public List<DriverReviewResponse> getReviewsOfDriver(Long id); 
+	
+	public double getAvgRatingOfDriver(Long id);
 }

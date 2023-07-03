@@ -92,4 +92,25 @@ public class ReviewServiceImpl implements ReviewService{
 		}
 		return reviewsMapper.entitiesToResponse(page.getContent());
 	}
+
+	@Override
+	public List<DriverReviewResponse> getReviewsOfDriver(Long id) {
+		if(Objects.isNull(id)) {
+			throw new GenericException(HttpStatus.BAD_REQUEST, AppConstants.USER_ID_REQUIRED,
+					messages.get(AppConstants.USER_ID_REQUIRED));
+		}
+		UserEntity user = userRepository.findByIdAndActive(id,Status.ACTIVE).orElseThrow(()->
+			new GenericException(HttpStatus.NOT_FOUND, AppConstants.USER_NOT_FOUND,
+					messages.get(AppConstants.USER_NOT_FOUND)));
+		List<ReviewsEntity> reviews = reviewsRepository.findAllByUserId(id);
+		return reviewsMapper.entitiesToResponse(reviews);
+	}
+
+	@Override
+	public double getAvgRatingOfDriver(Long id) {
+		UserEntity user = userRepository.findByIdAndActive(id,Status.ACTIVE).orElseThrow(()->
+			new GenericException(HttpStatus.NOT_FOUND, AppConstants.USER_NOT_FOUND,
+					messages.get(AppConstants.USER_NOT_FOUND)));
+		return reviewsRepository.getAvgOfDriverRating(id);
+	}
 }

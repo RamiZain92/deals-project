@@ -1,5 +1,7 @@
 extend type Query {
 	getAllReviews(pageNum : Int,pageSize : Int,keyword : String) : [DriverReviewResponse]
+	getAllReviewsOfDriver(id : Long) : [DriverReviewResponse]
+	getAvgRatingOfDriver(id : Long) : Float
 }
 type DriverReviewResponse{
 	id :  Long 
