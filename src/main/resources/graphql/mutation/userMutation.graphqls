@@ -1,3 +1,4 @@
 extend type Mutation {
     updateContactNumber(updateContactNumberDTO: UpdateContactNumberDTO): MessageResponse
+    updatePassword(updatePasswordDTO: UpdatePasswordDTO): MessageResponse
 }
