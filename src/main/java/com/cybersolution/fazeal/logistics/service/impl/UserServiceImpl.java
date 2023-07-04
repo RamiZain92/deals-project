@@ -69,10 +69,11 @@ public class UserServiceImpl implements UserService {
 		userRepository.save(loggedUser);
 		return MessageResponse.builder().message(messages.get(AppConstants.CONTACT_NUMBER_UPDATED_SUCCESSFULLY)).build();
 	}
+
 	@Override
 	public MessageResponse updatePassword(UpdatePasswordDTO updatePasswordDTO){
 		if(Objects.isNull(updatePasswordDTO.getOldPassword()) || Objects.isNull(updatePasswordDTO.getConfirmPassword())
-		|| Objects.isNull(updatePasswordDTO.getConfirmPassword())){
+				|| Objects.isNull(updatePasswordDTO.getConfirmPassword())){
 			throw new GenericException(HttpStatus.BAD_REQUEST,AppConstants.VALIDATION_FAILED,
 					messages.get(AppConstants.PASSWORD_EMPTY));
 		}
@@ -100,5 +101,27 @@ public class UserServiceImpl implements UserService {
 		}
 		throw new GenericException(HttpStatus.BAD_REQUEST, AppConstants.ERROR_INCORRECT_OLD_PWD,
 				messages.get(AppConstants.ERROR_INCORRECT_OLD_PWD));
+	}
+	@Override
+	public MessageResponse updateEmail(String email){
+		if(Objects.isNull(email)){
+			throw new GenericException(HttpStatus.BAD_REQUEST,AppConstants.VALIDATION_FAILED,
+					messages.get(AppConstants.EMAIL_NOT_BLANK));
+		}
+		if(Objects.nonNull(email)){
+			if(!utility.isEmailValid(email)){
+				throw new GenericException(HttpStatus.BAD_REQUEST,AppConstants.VALIDATION_FAILED,
+						messages.get(AppConstants.EMAIL_INVALID));
+			}
+			UserEntity userEntity = userRepository.findByEmail(email).orElse(null);
+			if (Objects.nonNull(userEntity)) {
+				throw new GenericException(HttpStatus.CONFLICT, AppConstants.EMAIL_ALREADY_EXIST,
+						messages.get(AppConstants.EMAIL_ALREADY_EXIST));
+			}
+		}
+		UserEntity loggedUser = getLoggedUser();
+		loggedUser.setEmail(email);
+		userRepository.save(loggedUser);
+		return MessageResponse.builder().message(messages.get(AppConstants.EMAIL_UPDATED_SUCCESSFULLY)).build();
 	}
 }

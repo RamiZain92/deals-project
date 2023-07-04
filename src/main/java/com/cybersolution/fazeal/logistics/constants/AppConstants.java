@@ -161,5 +161,5 @@ public final class AppConstants {
 	public static final String ERROR_INCORRECT_OLD_PWD = "ERROR_INCORRECT_OLD_PWD";
 	public static final String ERROR_INCORRECT_CONFIRM_PWD = "ERROR_INCORRECT_CONFIRM_PWD";
 	public static final String ERROR_OLD_AND_NEW_PASSWORD_ARE_MATCHING = "ERROR_OLD_AND_NEW_PASSWORD_ARE_MATCHING";
-	
+	public static final String EMAIL_UPDATED_SUCCESSFULLY="EMAIL_UPDATED_SUCCESSFULLY";
 }
