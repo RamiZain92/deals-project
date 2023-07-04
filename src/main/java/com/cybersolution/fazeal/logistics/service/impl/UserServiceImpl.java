@@ -130,9 +130,9 @@ public class UserServiceImpl implements UserService {
 		if(Objects.equals(userId,loggedUser.getId())) {
 			loggedUser.setUserPersonalImageUrl(profileImageUrl);
 			userRepository.save(loggedUser);
-			return MessageResponse.builder().message(messages.get(AppConstants.EMAIL_UPDATED_SUCCESSFULLY)).build();
+			return MessageResponse.builder().message(messages.get(AppConstants.PROFILE_IMAGE_UPDATED_SUCCESSFULLY)).build();
 		}
-		throw new GenericException(HttpStatus.BAD_REQUEST,AppConstants.VALIDATION_FAILED,
-				AppConstants.INVALID_PARAMS);
+		throw new GenericException(HttpStatus.BAD_REQUEST,AppConstants.INVALID_USER_ID,
+				messages.get(AppConstants.INVALID_USER_ID));
 	}
 }
