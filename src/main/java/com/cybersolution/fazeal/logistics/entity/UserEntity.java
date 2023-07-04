@@ -56,6 +56,9 @@ public class UserEntity extends AbstractBasedEntity implements Serializable {
 	@Column(name = "password", nullable = false, length = 64)
 	private String password;
 
+	@Column(name = "country_code", nullable = true, length = 10)
+	private String countryCode;
+
 	@Column(name = "contact_number", length = 45, nullable = false, unique = true)
 	private String contactNumber;
 
