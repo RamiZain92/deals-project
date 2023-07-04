@@ -71,6 +71,11 @@ public class UserServiceImpl implements UserService {
 	}
 	@Override
 	public MessageResponse updatePassword(UpdatePasswordDTO updatePasswordDTO){
+		if(Objects.isNull(updatePasswordDTO.getOldPassword()) || Objects.isNull(updatePasswordDTO.getConfirmPassword())
+		|| Objects.isNull(updatePasswordDTO.getConfirmPassword())){
+			throw new GenericException(HttpStatus.BAD_REQUEST,AppConstants.VALIDATION_FAILED,
+					messages.get(AppConstants.PASSWORD_EMPTY));
+		}
 		if (Objects.nonNull(updatePasswordDTO.getConfirmPassword())){
 			if(!utility.isPasswordValidator(updatePasswordDTO.getConfirmPassword())) {
 				throw new GenericException(HttpStatus.BAD_REQUEST, AppConstants.VALIDATION_FAILED,
