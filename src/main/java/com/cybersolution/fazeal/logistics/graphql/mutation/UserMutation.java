@@ -1,19 +1,26 @@
 package com.cybersolution.fazeal.logistics.graphql.mutation;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
+import com.cybersolution.fazeal.common.album.dto.DefaultImage;
+import com.cybersolution.fazeal.common.album.feign.AlbumApiClient;
 import com.cybersolution.fazeal.common.dto.MessageResponse;
+import com.cybersolution.fazeal.common.exception.GenericException;
 import com.cybersolution.fazeal.common.logistics.dto.UpdateContactNumberDTO;
 import com.cybersolution.fazeal.common.logistics.dto.UpdatePasswordDTO;
 import com.cybersolution.fazeal.logistics.constants.AppConstants;
 import com.cybersolution.fazeal.logistics.service.UserService;
 import com.cybersolution.fazeal.logistics.util.Messages;
+import com.cybersolution.fazeal.logistics.util.Utility;
+import graphql.schema.DataFetchingEnvironment;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.Objects;
 
 @Service
 @Validated
@@ -24,6 +31,8 @@ public class UserMutation implements GraphQLMutationResolver {
 
     @Autowired
     private Messages messages;
+    @Autowired
+    private AlbumApiClient albumApiClient;
 
     @Autowired
     private HttpServletResponse response;
@@ -38,5 +47,13 @@ public class UserMutation implements GraphQLMutationResolver {
     @PreAuthorize(value = AppConstants.HAS_ADMIN_ROLE_OR_USER_ROLE)
     public MessageResponse updateEmail(String email){
         return userService.updateEmail(email);
+    }
+    public MessageResponse updateProfileImage(Long id, DataFetchingEnvironment dataFetchingEnvironment){
+        String imageUrl = null;
+        if(Objects.isNull(Utility.getImageFileByIndex(dataFetchingEnvironment, 0))){
+            throw new GenericException(HttpStatus.BAD_REQUEST, AppConstants.VALIDATION_FAILED,messages.get(AppConstants.IMAGE_CANT_BE_BLANK));
+        }
+        imageUrl=albumApiClient.uploadImageAndGetA_PathToLink(DefaultImage.builder().imageFile(Utility.getImageFileByIndex(dataFetchingEnvironment, 0)).build());
+        return userService.updateProfileImage(id, imageUrl);
     }
 }
