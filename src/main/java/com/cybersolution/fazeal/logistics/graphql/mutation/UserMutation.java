@@ -35,4 +35,8 @@ public class UserMutation implements GraphQLMutationResolver {
     public MessageResponse updatePassword(@Valid UpdatePasswordDTO updatePasswordDTO){
         return userService.updatePassword(updatePasswordDTO);
     }
+    @PreAuthorize(value = AppConstants.HAS_ADMIN_ROLE_OR_USER_ROLE)
+    public MessageResponse updateEmail(String email){
+        return userService.updateEmail(email);
+    }
 }

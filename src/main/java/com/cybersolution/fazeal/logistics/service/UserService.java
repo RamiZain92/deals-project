@@ -12,4 +12,5 @@ public interface UserService {
 	public UserResponse getLoggedUserDetails();
 	MessageResponse updateContactNumber(UpdateContactNumberDTO updateContactNumberDTO);
 	MessageResponse updatePassword(UpdatePasswordDTO changePasswordDTO);
+	MessageResponse updateEmail(String email);
 }
