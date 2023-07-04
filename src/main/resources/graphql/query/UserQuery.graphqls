@@ -9,6 +9,7 @@ type UserResponse {
    genderType: String
    userName: String
    email: String
+   countryCode: String
    contactNumber: String
    userIdImageUrl: String
    userLicenceNumberImageUrl: String

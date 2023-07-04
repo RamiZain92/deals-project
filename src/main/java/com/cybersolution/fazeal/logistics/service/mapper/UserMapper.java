@@ -14,6 +14,7 @@ public class UserMapper {
                 .email(userEntity.getEmail())
                 .userName(userEntity.getUserName())
                 .userIdImageUrl(userEntity.getUserIdImageUrl())
+                .countryCode(userEntity.getCountryCode())
                 .contactNumber(userEntity.getContactNumber())
                 .dateOfBirth(userEntity.getDateOfBirth().toString())
                 .enabled(userEntity.getEnabled())
