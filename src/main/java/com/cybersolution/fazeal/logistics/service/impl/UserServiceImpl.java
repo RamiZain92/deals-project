@@ -59,12 +59,16 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public MessageResponse updateContactNumber(UpdateContactNumberDTO updateContactNumberDTO) {
 		UserEntity loggedUser = getLoggedUser();
+		if(Objects.isNull(updateContactNumberDTO.getCountryCode())){
+			throw new GenericException(HttpStatus.BAD_REQUEST, AppConstants.VALIDATION_FAILED, messages.get(AppConstants.COUNTRY_CODE_BLANK));
+		}
 		if(updateContactNumberDTO.getContactNumber().length() <9 || updateContactNumberDTO.getContactNumber().length() >15) {
 			throw new GenericException(HttpStatus.BAD_REQUEST, AppConstants.VALIDATION_FAILED,messages.get(AppConstants.CONTACT_NO_MUST_BE_09_15_DIGITS));
 		}
 		if(!utility.isNumberValidator(updateContactNumberDTO.getContactNumber())) {
 			throw new GenericException(HttpStatus.BAD_REQUEST, AppConstants.VALIDATION_FAILED,messages.get(AppConstants.CONTACT_NO_MUST_BE_DIGITS_ONLY));
 		}
+		loggedUser.setCountryCode(updateContactNumberDTO.getCountryCode());
 		loggedUser.setContactNumber(updateContactNumberDTO.getContactNumber());
 		userRepository.save(loggedUser);
 		return MessageResponse.builder().message(messages.get(AppConstants.CONTACT_NUMBER_UPDATED_SUCCESSFULLY)).build();
@@ -102,6 +106,7 @@ public class UserServiceImpl implements UserService {
 		throw new GenericException(HttpStatus.BAD_REQUEST, AppConstants.ERROR_INCORRECT_OLD_PWD,
 				messages.get(AppConstants.ERROR_INCORRECT_OLD_PWD));
 	}
+
 	@Override
 	public MessageResponse updateEmail(String email){
 		if(Objects.isNull(email)){

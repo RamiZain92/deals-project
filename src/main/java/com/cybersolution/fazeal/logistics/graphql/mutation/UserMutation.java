@@ -28,7 +28,7 @@ public class UserMutation implements GraphQLMutationResolver {
     @Autowired
     private HttpServletResponse response;
     @PreAuthorize(value = AppConstants.HAS_ADMIN_ROLE_OR_USER_ROLE)
-    public MessageResponse updateContactNumber(@Valid UpdateContactNumberDTO updateContactNumberDTO){
+    public MessageResponse updateContactNumber(UpdateContactNumberDTO updateContactNumberDTO){
         return userService.updateContactNumber(updateContactNumberDTO);
     }
     @PreAuthorize(value = AppConstants.HAS_ADMIN_ROLE_OR_USER_ROLE)
