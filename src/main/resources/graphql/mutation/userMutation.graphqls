@@ -3,4 +3,5 @@ extend type Mutation {
     updatePassword(updatePasswordDTO: UpdatePasswordDTO): MessageResponse
     updateEmail(email: String): MessageResponse
     updateProfileImage : MessageResponse
+    updateLicenceNumberImage : MessageResponse
 }

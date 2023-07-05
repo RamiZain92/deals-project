@@ -14,4 +14,5 @@ public interface UserService {
 	MessageResponse updatePassword(UpdatePasswordDTO changePasswordDTO);
 	MessageResponse updateEmail(String email);
 	MessageResponse updateProfileImage(String profileImageUrl);
+	MessageResponse updateLicenceNumberImage(String licenceNumberImageUrl);
 }
