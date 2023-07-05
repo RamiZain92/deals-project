@@ -129,4 +129,11 @@ public class UserServiceImpl implements UserService {
 		userRepository.save(loggedUser);
 		return MessageResponse.builder().message(messages.get(AppConstants.EMAIL_UPDATED_SUCCESSFULLY)).build();
 	}
+	@Override
+	public MessageResponse updateProfileImage(String profileImageUrl){
+		UserEntity loggedUser = getLoggedUser();
+		loggedUser.setUserPersonalImageUrl(profileImageUrl);
+		userRepository.save(loggedUser);
+		return MessageResponse.builder().message(messages.get(AppConstants.PROFILE_IMAGE_UPDATED_SUCCESSFULLY)).build();
+	}
 }
