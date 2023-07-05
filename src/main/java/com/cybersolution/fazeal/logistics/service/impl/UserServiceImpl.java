@@ -130,14 +130,10 @@ public class UserServiceImpl implements UserService {
 		return MessageResponse.builder().message(messages.get(AppConstants.EMAIL_UPDATED_SUCCESSFULLY)).build();
 	}
 	@Override
-	public MessageResponse updateProfileImage(Long userId, String profileImageUrl){
+	public MessageResponse updateProfileImage(String profileImageUrl){
 		UserEntity loggedUser = getLoggedUser();
-		if(Objects.equals(userId,loggedUser.getId())) {
-			loggedUser.setUserPersonalImageUrl(profileImageUrl);
-			userRepository.save(loggedUser);
-			return MessageResponse.builder().message(messages.get(AppConstants.PROFILE_IMAGE_UPDATED_SUCCESSFULLY)).build();
-		}
-		throw new GenericException(HttpStatus.BAD_REQUEST,AppConstants.INVALID_USER_ID,
-				messages.get(AppConstants.INVALID_USER_ID));
+		loggedUser.setUserPersonalImageUrl(profileImageUrl);
+		userRepository.save(loggedUser);
+		return MessageResponse.builder().message(messages.get(AppConstants.PROFILE_IMAGE_UPDATED_SUCCESSFULLY)).build();
 	}
 }

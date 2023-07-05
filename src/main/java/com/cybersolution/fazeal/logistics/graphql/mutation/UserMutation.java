@@ -48,12 +48,12 @@ public class UserMutation implements GraphQLMutationResolver {
     public MessageResponse updateEmail(String email){
         return userService.updateEmail(email);
     }
-    public MessageResponse updateProfileImage(Long id, DataFetchingEnvironment dataFetchingEnvironment){
+    public MessageResponse updateProfileImage(DataFetchingEnvironment dataFetchingEnvironment){
         String imageUrl = null;
         if(Objects.isNull(Utility.getImageFileByIndex(dataFetchingEnvironment, 0))){
             throw new GenericException(HttpStatus.BAD_REQUEST, AppConstants.VALIDATION_FAILED,messages.get(AppConstants.IMAGE_CANT_BE_BLANK));
         }
         imageUrl=albumApiClient.uploadImageAndGetA_PathToLink(DefaultImage.builder().imageFile(Utility.getImageFileByIndex(dataFetchingEnvironment, 0)).build());
-        return userService.updateProfileImage(id, imageUrl);
+        return userService.updateProfileImage(imageUrl);
     }
 }
