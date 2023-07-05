@@ -137,11 +137,19 @@ public class UserServiceImpl implements UserService {
 		userRepository.save(loggedUser);
 		return MessageResponse.builder().message(messages.get(AppConstants.PROFILE_IMAGE_UPDATED_SUCCESSFULLY)).build();
 	}
+
 	@Override
 	public MessageResponse updateLicenceNumberImage(String licenceNumberImageUrl){
 		UserEntity loggedUser = getLoggedUser();
 		loggedUser.setUserLicenceNumberImageUrl(licenceNumberImageUrl);
 		userRepository.save(loggedUser);
 		return MessageResponse.builder().message(messages.get(AppConstants.LICENCE_NUMBER_IMAGE_UPDATED_SUCCESSFULLY)).build();
+	}
+	@Override
+	public MessageResponse updateIdImage(String idImageUrl){
+		UserEntity loggedUser = getLoggedUser();
+		loggedUser.setUserIdImageUrl(idImageUrl);
+		userRepository.save(loggedUser);
+		return MessageResponse.builder().message(messages.get(AppConstants.USER_ID_IMGAE_UPDATED_SUCCESSFULLY)).build();
 	}
 }

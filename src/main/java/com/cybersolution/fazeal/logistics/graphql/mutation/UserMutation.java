@@ -66,4 +66,13 @@ public class UserMutation implements GraphQLMutationResolver {
         imageUrl=albumApiClient.uploadImageAndGetA_PathToLink(DefaultImage.builder().imageFile(Utility.getImageFileByIndex(dataFetchingEnvironment, 0)).build());
         return userService.updateLicenceNumberImage(imageUrl);
     }
+    @PreAuthorize(value = AppConstants.HAS_ADMIN_ROLE_OR_USER_ROLE)
+    public MessageResponse updateIdImage(DataFetchingEnvironment dataFetchingEnvironment){
+        String imageUrl=null;
+        if(Objects.isNull(Utility.getImageFileByIndex(dataFetchingEnvironment, 0))){
+            throw new GenericException(HttpStatus.BAD_REQUEST, AppConstants.VALIDATION_FAILED,messages.get(AppConstants.IMAGE_CANT_BE_BLANK));
+        }
+        imageUrl=albumApiClient.uploadImageAndGetA_PathToLink(DefaultImage.builder().imageFile(Utility.getImageFileByIndex(dataFetchingEnvironment, 0)).build());
+        return userService.updateIdImage(imageUrl);
+    }
 }

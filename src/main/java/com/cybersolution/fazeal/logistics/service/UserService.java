@@ -15,4 +15,5 @@ public interface UserService {
 	MessageResponse updateEmail(String email);
 	MessageResponse updateProfileImage(String profileImageUrl);
 	MessageResponse updateLicenceNumberImage(String licenceNumberImageUrl);
+	MessageResponse updateIdImage(String idImageUrl);
 }
