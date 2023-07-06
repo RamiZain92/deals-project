@@ -20,6 +20,8 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -74,5 +76,11 @@ public class UserMutation implements GraphQLMutationResolver {
         }
         imageUrl=albumApiClient.uploadImageAndGetA_PathToLink(DefaultImage.builder().imageFile(Utility.getImageFileByIndex(dataFetchingEnvironment, 0)).build());
         return userService.updateIdImage(imageUrl);
+    }
+    public MessageResponse addVehicleImages(Long vehicleId, DataFetchingEnvironment dataFetchingEnvironment){
+        if(Objects.isNull(Utility.getImagesFiles(dataFetchingEnvironment))){
+            throw new GenericException(HttpStatus.BAD_REQUEST, AppConstants.VALIDATION_FAILED,messages.get(AppConstants.VEHICLE_IMAGES_EMPTY));
+        }
+        return userService.uploadVehicleImages(vehicleId, Utility.getImagesFiles(dataFetchingEnvironment));
     }
 }

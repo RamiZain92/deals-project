@@ -1,5 +1,7 @@
 package com.cybersolution.fazeal.logistics.service.impl;
 
+import com.cybersolution.fazeal.common.album.dto.DefaultImage;
+import com.cybersolution.fazeal.common.album.feign.AlbumApiClient;
 import com.cybersolution.fazeal.common.business.dto.ChangePasswordDTO;
 import com.cybersolution.fazeal.common.dto.MessageResponse;
 import com.cybersolution.fazeal.common.exception.GenericException;
@@ -7,7 +9,11 @@ import com.cybersolution.fazeal.common.logistics.dto.UpdateContactNumberDTO;
 import com.cybersolution.fazeal.common.logistics.dto.UpdatePasswordDTO;
 import com.cybersolution.fazeal.logistics.constants.AppConstants;
 import com.cybersolution.fazeal.logistics.entity.UserEntity;
+import com.cybersolution.fazeal.logistics.entity.VehicleEntity;
+import com.cybersolution.fazeal.logistics.entity.VehicleImagesEntity;
 import com.cybersolution.fazeal.logistics.repository.UserRepository;
+import com.cybersolution.fazeal.logistics.repository.VehicleImagesRepository;
+import com.cybersolution.fazeal.logistics.repository.VehicleRepository;
 import com.cybersolution.fazeal.logistics.response.UserResponse;
 import com.cybersolution.fazeal.logistics.security.services.UserDetailsImpl;
 import com.cybersolution.fazeal.logistics.service.UserService;
@@ -19,7 +25,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -37,6 +47,10 @@ public class UserServiceImpl implements UserService {
 	private Utility utility;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	@Autowired
+	private VehicleRepository vehicleRepository;
+	@Autowired
+	private AlbumApiClient albumApiClient;
 
 	@Override
 	public UserEntity getLoggedUser() {
@@ -151,5 +165,31 @@ public class UserServiceImpl implements UserService {
 		loggedUser.setUserIdImageUrl(idImageUrl);
 		userRepository.save(loggedUser);
 		return MessageResponse.builder().message(messages.get(AppConstants.USER_ID_IMGAE_UPDATED_SUCCESSFULLY)).build();
+	}
+	@Override
+	public MessageResponse uploadVehicleImages(Long vehicleId,  List<CommonsMultipartFile> images){
+		UserEntity loggedUser = getLoggedUser();
+		VehicleEntity vehicleEntity = vehicleRepository.findById(vehicleId).orElse(null);
+		if(Objects.isNull(vehicleEntity)){
+			throw new GenericException(HttpStatus.BAD_REQUEST,AppConstants.VALIDATION_FAILED,
+					messages.get(AppConstants.VEHICLE_NOT_FOUND));
+		}
+		int currentImageCount = vehicleEntity.getVehicleImagesEntities().size();
+		int remainingImageSlots = 5 - currentImageCount;
+		if(remainingImageSlots<images.size()){
+			throw new GenericException(HttpStatus.BAD_REQUEST,AppConstants.VALIDATION_FAILED,
+					messages.get(AppConstants.VEHICLE_IMAGES_LIMIT_EXCEEDED));
+		}
+		List<String> imagesUrl = new ArrayList<>();
+		images.forEach(file -> {
+			imagesUrl.add(albumApiClient.uploadImageAndGetA_PathToLink(DefaultImage.builder().imageFile(file).build()));
+		});
+		for (String image: imagesUrl){
+			VehicleImagesEntity vehicleImagesEntity = VehicleImagesEntity.builder()
+					.vehicleEntity(vehicleEntity)
+					.imagePath(image).build();
+			vehicleEntity.getVehicleImagesEntities().add(vehicleImagesEntity);
+		}
+		return MessageResponse.builder().message(messages.get(AppConstants.SUCCESS_MESSAGE_VEHICLE_IMAGES)).build();
 	}
 }
