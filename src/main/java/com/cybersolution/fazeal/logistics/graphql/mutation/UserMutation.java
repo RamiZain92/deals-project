@@ -77,6 +77,7 @@ public class UserMutation implements GraphQLMutationResolver {
         imageUrl=albumApiClient.uploadImageAndGetA_PathToLink(DefaultImage.builder().imageFile(Utility.getImageFileByIndex(dataFetchingEnvironment, 0)).build());
         return userService.updateIdImage(imageUrl);
     }
+    @PreAuthorize(value = AppConstants.HAS_ADMIN_ROLE_OR_USER_ROLE)
     public MessageResponse addVehicleImages(Long vehicleId, DataFetchingEnvironment dataFetchingEnvironment){
         if(Objects.isNull(Utility.getImagesFiles(dataFetchingEnvironment))){
             throw new GenericException(HttpStatus.BAD_REQUEST, AppConstants.VALIDATION_FAILED,messages.get(AppConstants.VEHICLE_IMAGES_EMPTY));
