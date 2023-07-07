@@ -18,5 +18,5 @@ public interface DriverService {
 
     public MessageResponse selectDrivingMethod(Long vehicleId);
 
-
+    MessageResponse deleteVehicleImage(Long imageId, Long vehicleId);
 }

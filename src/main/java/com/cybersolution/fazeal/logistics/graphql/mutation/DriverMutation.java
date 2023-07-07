@@ -25,4 +25,8 @@ public class DriverMutation implements GraphQLMutationResolver {
     public MessageResponse selectDrivingMethod(Long vehicleId){
         return driverService.selectDrivingMethod(vehicleId);
     }
+    @PreAuthorize(value = AppConstants.HAS_ADMIN_ROLE_OR_USER_ROLE)
+    public MessageResponse deleteVehicleImage(Long imageId,Long vehicleId){
+        return driverService.deleteVehicleImage(imageId, vehicleId);
+    }
 }

@@ -6,6 +6,7 @@ import com.cybersolution.fazeal.logistics.constants.AppConstants;
 import com.cybersolution.fazeal.logistics.constants.Status;
 import com.cybersolution.fazeal.logistics.entity.UserEntity;
 import com.cybersolution.fazeal.logistics.entity.VehicleEntity;
+import com.cybersolution.fazeal.logistics.entity.VehicleImagesEntity;
 import com.cybersolution.fazeal.logistics.repository.UserRepository;
 import com.cybersolution.fazeal.logistics.repository.VehicleRepository;
 import com.cybersolution.fazeal.logistics.response.VehicleDetailsResponse;
@@ -72,5 +73,28 @@ public class DriverServiceImpl implements DriverService {
         vehicleEntity.setActive(Status.ACTIVE);
         vehicleRepository.save(vehicleEntity);
         return MessageResponse.builder().message(messages.get(AppConstants.DRIVING_METHOD_UPDATED)).build();
+    }
+    @Override
+    public MessageResponse deleteVehicleImage(Long imageId, Long vehicleId) {
+        if (Objects.isNull(imageId)) {
+            throw new GenericException(HttpStatus.BAD_REQUEST, AppConstants.VALIDATION_FAILED,
+                    messages.get(AppConstants.IMAGE_ID_REQUIRED));
+        }
+        VehicleEntity vehicleEntity = vehicleRepository.findById(vehicleId)
+                .orElseThrow(() -> new GenericException(HttpStatus.NOT_FOUND, AppConstants.VEHICLE_NOT_FOUND,
+                        messages.get(AppConstants.VEHICLE_NOT_FOUND)));
+        if (vehicleEntity.getVehicleImagesEntities().size() <= 2) {
+            throw new GenericException(HttpStatus.BAD_REQUEST, AppConstants.VALIDATION_FAILED,
+                    messages.get(AppConstants.CANNOT_REMOVE_ALL_VEHICLE_IMAGES));
+        }
+        VehicleImagesEntity imageToRemove = vehicleEntity.getVehicleImagesEntities().stream()
+                .filter(image -> image.getId().equals(imageId))
+                .findFirst()
+                .orElseThrow(() -> new GenericException(HttpStatus.NOT_FOUND, AppConstants.IMAGE_NOT_FOUND,
+                        messages.get(AppConstants.IMAGE_NOT_FOUND)));
+        vehicleEntity.getVehicleImagesEntities().remove(imageToRemove);
+//        albumApiClient.deleteAWS_FileByURL(imageToRemove.getImagePath());
+        vehicleRepository.save(vehicleEntity);
+        return MessageResponse.builder().message(messages.get(AppConstants.VEHICLE_IMAGE_DELETED_SUCESSFULLY)).build();
     }
 }
