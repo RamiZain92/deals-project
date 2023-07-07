@@ -47,10 +47,6 @@ public class UserServiceImpl implements UserService {
 	private Utility utility;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	@Autowired
-	private VehicleRepository vehicleRepository;
-	@Autowired
-	private AlbumApiClient albumApiClient;
 
 	@Override
 	public UserEntity getLoggedUser() {
@@ -165,31 +161,5 @@ public class UserServiceImpl implements UserService {
 		loggedUser.setUserIdImageUrl(idImageUrl);
 		userRepository.save(loggedUser);
 		return MessageResponse.builder().message(messages.get(AppConstants.USER_ID_IMGAE_UPDATED_SUCCESSFULLY)).build();
-	}
-	@Override
-	public MessageResponse uploadVehicleImages(Long vehicleId,  List<CommonsMultipartFile> images){
-		UserEntity loggedUser = getLoggedUser();
-		VehicleEntity vehicleEntity = vehicleRepository.findById(vehicleId).orElse(null);
-		if(Objects.isNull(vehicleEntity)){
-			throw new GenericException(HttpStatus.BAD_REQUEST,AppConstants.VALIDATION_FAILED,
-					messages.get(AppConstants.VEHICLE_NOT_FOUND));
-		}
-		int currentImageCount = vehicleEntity.getVehicleImagesEntities().size();
-		int remainingImageSlots = 5 - currentImageCount;
-		if(remainingImageSlots<images.size()){
-			throw new GenericException(HttpStatus.BAD_REQUEST,AppConstants.VALIDATION_FAILED,
-					messages.get(AppConstants.VEHICLE_IMAGES_LIMIT_EXCEEDED));
-		}
-		List<String> imagesUrl = new ArrayList<>();
-		images.forEach(file -> {
-			imagesUrl.add(albumApiClient.uploadImageAndGetA_PathToLink(DefaultImage.builder().imageFile(file).build()));
-		});
-		for (String image: imagesUrl){
-			VehicleImagesEntity vehicleImagesEntity = VehicleImagesEntity.builder()
-					.vehicleEntity(vehicleEntity)
-					.imagePath(image).build();
-			vehicleEntity.getVehicleImagesEntities().add(vehicleImagesEntity);
-		}
-		return MessageResponse.builder().message(messages.get(AppConstants.VEHICLE_iMAGES_UPLOADED_SUCCESSFULLY)).build();
 	}
 }

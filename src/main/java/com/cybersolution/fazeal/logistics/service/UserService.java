@@ -19,5 +19,4 @@ public interface UserService {
 	MessageResponse updateProfileImage(String profileImageUrl);
 	MessageResponse updateLicenceNumberImage(String licenceNumberImageUrl);
 	MessageResponse updateIdImage(String idImageUrl);
-	MessageResponse uploadVehicleImages(Long vehicleId,  List<CommonsMultipartFile> images);
 }

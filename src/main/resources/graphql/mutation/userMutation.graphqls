@@ -5,5 +5,4 @@ extend type Mutation {
     updateProfileImage : MessageResponse
     updateLicenceNumberImage : MessageResponse
     updateIdImage : MessageResponse
-    addVehicleImages(vehicleId: Long): MessageResponse
 }
