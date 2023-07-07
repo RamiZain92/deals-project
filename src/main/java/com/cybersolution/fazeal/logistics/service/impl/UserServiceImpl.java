@@ -190,6 +190,6 @@ public class UserServiceImpl implements UserService {
 					.imagePath(image).build();
 			vehicleEntity.getVehicleImagesEntities().add(vehicleImagesEntity);
 		}
-		return MessageResponse.builder().message(messages.get(AppConstants.SUCCESS_MESSAGE_VEHICLE_IMAGES)).build();
+		return MessageResponse.builder().message(messages.get(AppConstants.VEHICLE_iMAGES_UPLOADED_SUCCESSFULLY)).build();
 	}
 }
