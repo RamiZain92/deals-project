@@ -405,7 +405,7 @@
 										<limit>
 											<counter>COMPLEXITY</counter>
 											<value>COVEREDRATIO</value>
-											<minimum>0.01</minimum>
+											<minimum>0.02</minimum>
 											<!-- to make the bitbucket pipeline build success 0.10 provided, 
 												it should be changed as per requirement(like 0.80/0.85/0.90) -->
 										</limit>
