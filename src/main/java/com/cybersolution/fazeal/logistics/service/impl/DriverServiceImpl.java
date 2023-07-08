@@ -90,7 +90,7 @@ public class DriverServiceImpl implements DriverService {
         }
         if(Objects.equals(vehicleEntity.getUserEntity().getId(),loggedUser.getId())){
             throw new GenericException(HttpStatus.BAD_REQUEST,AppConstants.VALIDATION_FAILED,
-                    messages.get(AppConstants.VEHICLE_NOT_REGISTERD_AGAINST_LOGGED_USER));
+                    messages.get(AppConstants.VEHICLE_NOT_REGISTERED_AGAINST_LOGGED_USER));
         }
         int currentImageCount = vehicleEntity.getVehicleImagesEntities().size();
         int remainingImageSlots = 5 - currentImageCount;
@@ -113,6 +113,7 @@ public class DriverServiceImpl implements DriverService {
     }
     @Override
     public MessageResponse deleteVehicleImage(Long imageId, Long vehicleId) {
+        UserEntity loggedUser =  userService.getLoggedUser();
         if (Objects.isNull(imageId)) {
             throw new GenericException(HttpStatus.BAD_REQUEST, AppConstants.VALIDATION_FAILED,
                     messages.get(AppConstants.IMAGE_ID_REQUIRED));
@@ -120,6 +121,10 @@ public class DriverServiceImpl implements DriverService {
         VehicleEntity vehicleEntity = vehicleRepository.findById(vehicleId)
                 .orElseThrow(() -> new GenericException(HttpStatus.NOT_FOUND, AppConstants.VEHICLE_NOT_FOUND,
                         messages.get(AppConstants.VEHICLE_NOT_FOUND)));
+        if(Objects.equals(vehicleEntity.getUserEntity().getId(),loggedUser.getId())){
+            throw new GenericException(HttpStatus.BAD_REQUEST,AppConstants.VALIDATION_FAILED,
+                    messages.get(AppConstants.VEHICLE_NOT_REGISTERED_AGAINST_LOGGED_USER));
+        }
         if (vehicleEntity.getVehicleImagesEntities().size() <= 2) {
             throw new GenericException(HttpStatus.BAD_REQUEST, AppConstants.VALIDATION_FAILED,
                     messages.get(AppConstants.CANNOT_REMOVE_ALL_VEHICLE_IMAGES));
@@ -130,7 +135,7 @@ public class DriverServiceImpl implements DriverService {
                 .orElseThrow(() -> new GenericException(HttpStatus.NOT_FOUND, AppConstants.IMAGE_NOT_FOUND,
                         messages.get(AppConstants.IMAGE_NOT_FOUND)));
         vehicleEntity.getVehicleImagesEntities().remove(imageToRemove);
-//        albumApiClient.deleteAWS_FileByURL(imageToRemove.getImagePath());
+        albumApiClient.deleteAWS_FileByURL(imageToRemove.getImagePath());
         vehicleRepository.save(vehicleEntity);
         return MessageResponse.builder().message(messages.get(AppConstants.VEHICLE_IMAGE_DELETED_SUCESSFULLY)).build();
     }
