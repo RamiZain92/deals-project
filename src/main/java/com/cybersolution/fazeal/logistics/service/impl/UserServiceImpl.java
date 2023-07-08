@@ -1,5 +1,7 @@
 package com.cybersolution.fazeal.logistics.service.impl;
 
+import com.cybersolution.fazeal.common.album.dto.DefaultImage;
+import com.cybersolution.fazeal.common.album.feign.AlbumApiClient;
 import com.cybersolution.fazeal.common.business.dto.ChangePasswordDTO;
 import com.cybersolution.fazeal.common.dto.MessageResponse;
 import com.cybersolution.fazeal.common.exception.GenericException;
@@ -7,7 +9,11 @@ import com.cybersolution.fazeal.common.logistics.dto.UpdateContactNumberDTO;
 import com.cybersolution.fazeal.common.logistics.dto.UpdatePasswordDTO;
 import com.cybersolution.fazeal.logistics.constants.AppConstants;
 import com.cybersolution.fazeal.logistics.entity.UserEntity;
+import com.cybersolution.fazeal.logistics.entity.VehicleEntity;
+import com.cybersolution.fazeal.logistics.entity.VehicleImagesEntity;
 import com.cybersolution.fazeal.logistics.repository.UserRepository;
+import com.cybersolution.fazeal.logistics.repository.VehicleImagesRepository;
+import com.cybersolution.fazeal.logistics.repository.VehicleRepository;
 import com.cybersolution.fazeal.logistics.response.UserResponse;
 import com.cybersolution.fazeal.logistics.security.services.UserDetailsImpl;
 import com.cybersolution.fazeal.logistics.service.UserService;
@@ -19,7 +25,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Service

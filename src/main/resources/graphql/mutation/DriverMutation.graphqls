@@ -1,4 +1,5 @@
 extend type Mutation {
    setDriverAvailability(available: Boolean): MessageResponse
    selectDrivingMethod(vehicleId: Long): MessageResponse
+   addVehicleImages(vehicleId: Long): MessageResponse
 }
