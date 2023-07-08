@@ -1,5 +1,7 @@
 package com.cybersolution.fazeal.logistics.service.impl;
 
+import com.cybersolution.fazeal.common.album.dto.DefaultImage;
+import com.cybersolution.fazeal.common.album.feign.AlbumApiClient;
 import com.cybersolution.fazeal.common.dto.MessageResponse;
 import com.cybersolution.fazeal.common.exception.GenericException;
 import com.cybersolution.fazeal.logistics.constants.AppConstants;
@@ -17,7 +19,9 @@ import com.cybersolution.fazeal.logistics.util.Messages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,6 +42,8 @@ public class DriverServiceImpl implements DriverService {
 
     @Autowired
     private VehicleMapper vehicleMapper;
+    @Autowired
+    private AlbumApiClient albumApiClient;
 
 
     @Override
@@ -73,6 +79,37 @@ public class DriverServiceImpl implements DriverService {
         vehicleEntity.setActive(Status.ACTIVE);
         vehicleRepository.save(vehicleEntity);
         return MessageResponse.builder().message(messages.get(AppConstants.DRIVING_METHOD_UPDATED)).build();
+    }
+    @Override
+    public MessageResponse uploadVehicleImages(Long vehicleId,  List<CommonsMultipartFile> images){
+        UserEntity loggedUser = userService.getLoggedUser();
+        VehicleEntity vehicleEntity = vehicleRepository.findById(vehicleId).orElse(null);
+        if(Objects.isNull(vehicleEntity)){
+            throw new GenericException(HttpStatus.BAD_REQUEST,AppConstants.VALIDATION_FAILED,
+                    messages.get(AppConstants.VEHICLE_NOT_FOUND));
+        }
+        if(Objects.equals(vehicleEntity.getUserEntity().getId(),loggedUser.getId())){
+            throw new GenericException(HttpStatus.BAD_REQUEST,AppConstants.VALIDATION_FAILED,
+                    messages.get(AppConstants.VEHICLE_NOT_REGISTERD_AGAINST_LOGGED_USER));
+        }
+        int currentImageCount = vehicleEntity.getVehicleImagesEntities().size();
+        int remainingImageSlots = 5 - currentImageCount;
+        if(remainingImageSlots<images.size()){
+            throw new GenericException(HttpStatus.BAD_REQUEST,AppConstants.VALIDATION_FAILED,
+                    messages.get(AppConstants.VEHICLE_IMAGES_LIMIT_EXCEEDED));
+        }
+        List<String> imagesUrl = new ArrayList<>();
+        images.forEach(file -> {
+            imagesUrl.add(albumApiClient.uploadImageAndGetA_PathToLink(DefaultImage.builder().imageFile(file).build()));
+        });
+        for (String image: imagesUrl){
+            VehicleImagesEntity vehicleImagesEntity = VehicleImagesEntity.builder()
+                    .vehicleEntity(vehicleEntity)
+                    .imagePath(image).build();
+            vehicleEntity.getVehicleImagesEntities().add(vehicleImagesEntity);
+        }
+        vehicleRepository.save(vehicleEntity);
+        return MessageResponse.builder().message(messages.get(AppConstants.VEHICLE_iMAGES_UPLOADED_SUCCESSFULLY)).build();
     }
     @Override
     public MessageResponse deleteVehicleImage(Long imageId, Long vehicleId) {
