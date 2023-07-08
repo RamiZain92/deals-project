@@ -88,7 +88,7 @@ public class DriverServiceImpl implements DriverService {
             throw new GenericException(HttpStatus.BAD_REQUEST,AppConstants.VALIDATION_FAILED,
                     messages.get(AppConstants.VEHICLE_NOT_FOUND));
         }
-        if(Objects.equals(vehicleEntity.getUserEntity().getId(),loggedUser.getId())){
+        if(!Objects.equals(vehicleEntity.getUserEntity().getId(),loggedUser.getId())){
             throw new GenericException(HttpStatus.BAD_REQUEST,AppConstants.VALIDATION_FAILED,
                     messages.get(AppConstants.VEHICLE_NOT_REGISTERED_AGAINST_LOGGED_USER));
         }
@@ -121,7 +121,7 @@ public class DriverServiceImpl implements DriverService {
         VehicleEntity vehicleEntity = vehicleRepository.findById(vehicleId)
                 .orElseThrow(() -> new GenericException(HttpStatus.NOT_FOUND, AppConstants.VEHICLE_NOT_FOUND,
                         messages.get(AppConstants.VEHICLE_NOT_FOUND)));
-        if(Objects.equals(vehicleEntity.getUserEntity().getId(),loggedUser.getId())){
+        if(!Objects.equals(vehicleEntity.getUserEntity().getId(),loggedUser.getId())){
             throw new GenericException(HttpStatus.BAD_REQUEST,AppConstants.VALIDATION_FAILED,
                     messages.get(AppConstants.VEHICLE_NOT_REGISTERED_AGAINST_LOGGED_USER));
         }
