@@ -88,6 +88,10 @@ public class DriverServiceImpl implements DriverService {
             throw new GenericException(HttpStatus.BAD_REQUEST,AppConstants.VALIDATION_FAILED,
                     messages.get(AppConstants.VEHICLE_NOT_FOUND));
         }
+        if(Objects.equals(vehicleEntity.getUserEntity().getId(),loggedUser.getId())){
+            throw new GenericException(HttpStatus.BAD_REQUEST,AppConstants.VALIDATION_FAILED,
+                    messages.get(AppConstants.VEHICLE_NOT_REGISTERD_AGAINST_LOGGED_USER));
+        }
         int currentImageCount = vehicleEntity.getVehicleImagesEntities().size();
         int remainingImageSlots = 5 - currentImageCount;
         if(remainingImageSlots<images.size()){
@@ -104,6 +108,7 @@ public class DriverServiceImpl implements DriverService {
                     .imagePath(image).build();
             vehicleEntity.getVehicleImagesEntities().add(vehicleImagesEntity);
         }
+        vehicleRepository.save(vehicleEntity);
         return MessageResponse.builder().message(messages.get(AppConstants.VEHICLE_iMAGES_UPLOADED_SUCCESSFULLY)).build();
     }
 }
