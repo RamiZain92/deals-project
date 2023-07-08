@@ -41,4 +41,8 @@ public class DriverMutation implements GraphQLMutationResolver {
         }
         return driverService.uploadVehicleImages(vehicleId, Utility.getImagesFiles(dataFetchingEnvironment));
     }
+    @PreAuthorize(value = AppConstants.HAS_ADMIN_ROLE_OR_USER_ROLE)
+    public MessageResponse deleteVehicleImage(Long imageId,Long vehicleId){
+        return driverService.deleteVehicleImage(imageId, vehicleId);
+    }
 }

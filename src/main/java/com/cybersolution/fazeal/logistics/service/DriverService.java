@@ -20,4 +20,5 @@ public interface DriverService {
     public MessageResponse selectDrivingMethod(Long vehicleId);
 
     MessageResponse uploadVehicleImages(Long vehicleId,  List<CommonsMultipartFile> images);
+    MessageResponse deleteVehicleImage(Long imageId, Long vehicleId);
 }
