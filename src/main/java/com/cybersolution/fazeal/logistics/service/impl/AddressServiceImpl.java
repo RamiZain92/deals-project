@@ -3,7 +3,7 @@ package com.cybersolution.fazeal.logistics.service.impl;
 import com.cybersolution.fazeal.common.dto.MessageResponse;
 import com.cybersolution.fazeal.common.exception.GenericException;
 import com.cybersolution.fazeal.logistics.constants.AppConstants;
-import com.cybersolution.fazeal.logistics.dto.AddressDTO;
+import com.cybersolution.fazeal.logistics.custom.validation.AddressValidation;
 import com.cybersolution.fazeal.logistics.dto.UpdateAddressDTO;
 import com.cybersolution.fazeal.logistics.entity.AddressEntity;
 import com.cybersolution.fazeal.logistics.entity.CountryEntity;
@@ -23,6 +23,8 @@ import java.util.Objects;
 @Service
 public class AddressServiceImpl implements AddressService {
     @Autowired
+    private AddressValidation addressValidation;
+    @Autowired
     private UserService userService;
     @Autowired
     private Messages messages;
@@ -33,6 +35,7 @@ public class AddressServiceImpl implements AddressService {
     @Autowired
     private AddressRepository addressRepository;
     public MessageResponse updateAddress(UpdateAddressDTO addressDTO){
+        addressValidation.isAddressValid(addressDTO);
         UserEntity loggedUser = userService.getLoggedUser();
         CountryEntity countryEntity = countryRepository.findById(addressDTO.getCountryId()).orElse(null);
         if (Objects.isNull(countryEntity)) {
