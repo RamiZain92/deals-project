@@ -1,0 +1,11 @@
+input UpdateAddressDTO{
+    locationName: String
+    description: String
+    addressLineOne: String
+    addressLineTwo: String
+    zipCode: String
+    countryId: Long
+    state: String
+    city: String
+    streetNumber: String
+}
