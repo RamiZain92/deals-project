@@ -19,6 +19,7 @@ type JwtResponseDTO {
 	refreshToken: String
 	tokenType: String
 	roles: [String]
+	signUpProcess: String
 }
 
 type MessageResponse{
