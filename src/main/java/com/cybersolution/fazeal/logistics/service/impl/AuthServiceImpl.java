@@ -72,11 +72,13 @@ public class AuthServiceImpl implements AuthService {
                     messages.get(AppConstants.USER_NOT_FOUND));
         }
 
-        userEntity = userRepository.findByIdAndSignUpProcess(userEntity.getId(), SignUpProcess.DONE).orElse(null);
-        if (Objects.isNull(userEntity)) {
+//        userEntity = userRepository.findByIdAndSignUpProcess(userEntity.getId(), SignUpProcess.NOT_DONE).orElse(null);
+        if (SignUpProcess.NOT_DONE.equals(userEntity.getSignUpProcess())) {
             throw new GenericException(HttpStatus.CONFLICT, AppConstants.SIGN_UP_NOT_DONE,
                     messages.get(AppConstants.SIGN_UP_NOT_DONE));
         }
+
+
 
         if(!userEntity.getRoleEntity().getRoleType().equals(RoleType.ROLE_USER)){
             throw new GenericException(HttpStatus.CONFLICT, AppConstants.NOT_AUTHORIZED_TO_LOGIN,
@@ -103,6 +105,7 @@ public class AuthServiceImpl implements AuthService {
                 .lastName(userDetails.getLastName()).email(userDetails.getEmail())
                 .accessToken(userSessionTokenEntity.getJwtAccessToken())
                 .refreshToken(userSessionTokenEntity.getRefreshToken()).tokenType(AppConstants.BEARER).roles(roles)
+                .signUpProcess(userEntity.getSignUpProcess().toString())
                 .build();
     }
 

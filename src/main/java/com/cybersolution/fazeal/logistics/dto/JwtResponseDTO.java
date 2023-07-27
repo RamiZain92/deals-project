@@ -27,4 +27,5 @@ public class JwtResponseDTO {
 	private String refreshToken;
 	private String tokenType = "Bearer";
 	private List<String> roles;
+	private String signUpProcess;
 }
