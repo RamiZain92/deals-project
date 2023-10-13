@@ -1,29 +1,3 @@
-# README #
+In this scenario, you are a member of a Scrum team working on the development of a data warehouse for Bloomberg, with the primary goal of enabling comprehensive analysis of Foreign Exchange (FX) deals. One of the key customer stories within this project is the requirement to accept detailed FX deal information from external sources and persist this data into a relational database (DB).
 
-This README would normally document whatever steps are necessary to get your application up and running.
-
-### What is this repository for? ###
-
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+In summary, this customer story and project context emphasize the crucial role of data validation, data integrity, and reliability in the context of a financial data warehouse. It also highlights the need to ensure that FX deals are accurately stored and analyzed while minimizing the risk of duplicate or erroneous data. The team's work involves not only the development of the database and storage mechanism but also the creation of a robust validation and import process to meet the specific needs of Bloomberg.
