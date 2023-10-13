@@ -1,0 +1,19 @@
+type Mutation {
+   saveDeal(dealDTO: DealDTO): MessageResponse
+}
+
+input DealDTO {
+   dealUniqueId: String!
+   fromCurrency: CurrencyType!
+   toCurrency: CurrencyType!
+   dealTime:String!
+   dealAmount: Float!
+}
+
+type MessageResponse{
+   message:String
+}
+
+enum CurrencyType {
+    USD, JD, EU
+}

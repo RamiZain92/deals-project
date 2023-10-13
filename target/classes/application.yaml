@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: deals-project
+  datasource:
+    username: postgres
+    url: jdbc:postgresql://localhost:5432/deals
+    password: "0944852291"
+    hikari:
+      maxLifeTime: 600000
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL94Dialect
+        format_sql: 'true'
+    hibernate:
+      ddl-auto: update
+    show-sql: 'false'
+    generate-ddl: true
+
+server:
+  port: 8020
