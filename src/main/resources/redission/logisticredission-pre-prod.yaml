@@ -1,3 +1,0 @@
-singleServerConfig:
-  address: "http://redis:6379"
-  password: admin1234

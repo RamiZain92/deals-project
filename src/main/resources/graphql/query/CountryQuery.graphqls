@@ -1,9 +1,0 @@
-extend type Query {
-   listAllCountries: [CountryDTO]
-}
-
-type CountryDTO {
-   id: Long
-   name: String
-   code: String
-}

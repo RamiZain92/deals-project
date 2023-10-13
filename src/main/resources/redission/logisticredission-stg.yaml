@@ -1,3 +1,0 @@
-singleServerConfig:
-  address: "redis://192.168.1.217:6379"
-  password: Welcome@123!
